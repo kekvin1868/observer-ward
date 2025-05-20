@@ -69,7 +69,7 @@ async function runTracker() {
       await sendToDiscord(process.env.DISCORD_CHANNEL_ID, `📰 New post from **${handle}**: ${postUrl}`)
     }
 
-    // Add new URIs based of current handles
+    // Add new URIs based on current handles
     seen[did] = [...seenUris, ...newPosts.map(n => n.post.uri)];
   }
 
