@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import { sendToDiscord } from '../discord/message.js';
 import { agent } from './client.js';
 import { bluesky } from '../../config.js';
 import fs from 'fs/promises';
@@ -62,9 +63,13 @@ async function runTracker() {
 
     for (const n of newPosts) {
       console.log(`📰 New post from ${handle}: ${n.post.uri}`);
+
+      const postUrl = `https://bsky.app/profile/${did}/post/${n.post.uri.split('/').pop()}`;
+
+      await sendToDiscord(process.env.DISCORD_CHANNEL_ID, `📰 New post from **${handle}**: ${postUrl}`)
     }
 
-    // Add new URIs based of current handle
+    // Add new URIs based of current handles
     seen[did] = [...seenUris, ...newPosts.map(n => n.post.uri)];
   }
 
