@@ -12,10 +12,12 @@ export async function login() {
       password: bluesky.pass,
     });
 
-    console.log(`✅ Logged in to Bluesky as ${bluesky.handle}`);
+    console.log(`✅ Logged in to Bluesky`);
   } catch (error) {
     console.error('❌ Bluesky login failed:', error);
   }
 }
+
+await login();
 
 export { agent };
