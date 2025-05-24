@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import { sendToDiscord } from '../discord/message.js';
+import { EmbedBuilder } from 'discord.js';
 import { agent } from './client.js';
 import { bluesky } from '../../config.js';
 import fs from 'fs/promises';
@@ -62,11 +63,17 @@ async function runTracker() {
     const newPosts = posts.filter(p => !seenUris.includes(p.post.uri));
 
     for (const n of newPosts) {
-      console.log(`📰 New post from ${handle}: ${n.post.uri}`);
+      const currentUri = n.post.uri;
+      const postUrl = `https://bsky.app/profile/${did}/post/${currentUri.split('/').pop()}`;
 
-      const postUrl = `https://bsky.app/profile/${did}/post/${n.post.uri.split('/').pop()}`;
+      const embed = new EmbedBuilder()
+        .setColor(0x1D9BF0)
+        .setTitle(`New post from ${handle}`)
+        .setURL(postUrl)
+        .setDescription(n.post.record.text || 'No text content')
+        .setTimestamp(new Date(n.post.record.createdAt));
 
-      await sendToDiscord(process.env.DISCORD_CHANNEL_ID, `📰 New post from **${handle}**: ${postUrl}`)
+      await sendToDiscord(process.env.DISCORD_CHANNEL_ID, ``, embed)
     }
 
     // Add new URIs based on current handles
@@ -76,4 +83,14 @@ async function runTracker() {
   await saveSeen(seen);
 }
 
-runTracker();
+async function startTracker(intervalMs) {
+  console.log(`📡 Tracker started. Running every ${intervalMs / 1000} seconds.`);
+
+  await runTracker();
+
+  setInterval(async () => {
+    await runTracker();
+  }, intervalMs);
+}
+
+startTracker(45 * 60 * 1000);
