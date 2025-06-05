@@ -1,14 +1,14 @@
 import { Client, GatewayIntentBits } from 'discord.js';
 import 'dotenv/config';
 
-const client = new Client({
+const discordClient = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
 });
 
-client.once('ready', () => {
-  console.log(`✅ Discord Bot logged in as ${client.user.tag}`);
+discordClient.once('ready', () => {
+  console.log(`✅ Discord Bot logged in as ${discordClient.user.tag}`);
 });
 
-await client.login(process.env.DISCORD_TOKEN);
+await discordClient.login(process.env.DISCORD_TOKEN);
 
-export { client };
+export { discordClient };
