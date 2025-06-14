@@ -1,9 +1,9 @@
-import { client } from './client.js';
+import { discordClient } from './client.js';
 
 // Send a message to a specific channel
 export async function sendToDiscord(channelId, content, embedData = null) {
   try {
-    const channel = await client.channels.fetch(channelId);
+    const channel = await discordClient.channels.fetch(channelId);
     if (!channel) {
       console.error('❌ Channel not found.');
       return;
