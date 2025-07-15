@@ -7,8 +7,13 @@ export async function sendToDiscord(channelId, content, embed = null) {
       const channel = discordClient.channels.cache.get(channelId);
 
       if (!channel) {
-        console.error(`❌ Discord Channel with ID ${channelId} not found or inaccessible.`);
-        return;
+        try {
+          channel = await discordClient.channels.fetch(channelId);
+          console.log(`[Discord Message] Channel ${channelId} fetched successfully (was not in cache).`);
+        } catch (fetchError) {
+          console.error(`❌ Discord Channel with ID ${channelId} not found or inaccessible after fetching:`, fetchError.message);
+          return; // Return if fetching also fails
+        }
       }
 
       const options = { content: content };
