@@ -2,7 +2,7 @@ import 'dotenv/config';
 import { login as loginBsky } from './services/bluesky/client.js';
 import { discordClient } from './services/discord/client.js';
 import { Events } from 'discord.js';
-import { loadCommands, commands as commandsConstructor, commands } from './utils/commandLoader.js';
+import { loadCommands, commands as commandsConstructor } from './utils/commandLoader.js';
 import { runTracker, startTracker } from './services/bluesky/tracker.js';
 
 import path from 'node:path';
