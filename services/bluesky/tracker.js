@@ -101,7 +101,7 @@ export async function runTracker() {
 
       const discordChannelId = process.env.DISCORD_CHANNEL_ID;
       if (discordChannelId) {
-        await sendToDiscord(process.env.DISCORD_CHANNEL_ID, ``, embed)
+        await sendToDiscord(discordChannelId, ``, embed)
       } else {
         console.warn('⚠️ DISCORD_CHANNEL_ID not set in .env. Cannot send Bluesky posts to Discord.');
       }
